@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Sepakat Shoes Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: linear-gradient(135deg, #0D4715 0%, #05210a 100%);
+        }
+
+        .login-card {
+            animation: slideUp 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .input-focus:focus {
+            border-color: #0D4715;
+            box-shadow: 0 0 0 4px rgba(13, 71, 21, 0.1);
+        }
+    </style>
+</head>
+<body class="h-screen flex items-center justify-center p-6">
+
+    <div class="login-card bg-white w-full max-w-md rounded-[40px] p-10 shadow-2xl relative overflow-hidden">
+        <!-- Dekorasi Latar Belakang Kecil -->
+        <div class="absolute top-0 right-0 w-32 h-32 bg-green-50 rounded-bl-[100px] -z-0"></div>
+        
+        <div class="relative z-10">
+            <!-- Logo Section -->
+            <div class="w-16 h-16 bg-[#0D4715] rounded-2xl flex items-center justify-center mb-8 shadow-xl shadow-green-900/20">
+                <i class="fas fa-shoe-prints text-white text-2xl"></i>
+            </div>
+
+            <!-- Header Text -->
+            <h1 class="text-3xl font-black text-slate-900 leading-tight">
+                Selamat Datang di <span class="text-[#0D4715]">Sepakat.</span>
+            </h1>
+            <p class="text-slate-400 mt-2 font-medium mb-10">Silahkan login untuk mengakses panel kontrol.</p>
+
+            <!-- Login Form -->
+            <form id="loginForm" class="space-y-5">
+                <div>
+                    <label class="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Username</label>
+                    <div class="relative">
+                        <i class="fas fa-user absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 text-sm"></i>
+                        <input type="text" id="username" 
+                            class="w-full pl-12 pr-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none input-focus transition-all font-bold text-slate-700" required>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Password</label>
+                    <div class="relative">
+                        <i class="fas fa-lock absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 text-sm"></i>
+                        <input type="password" id="password"  
+                            class="w-full pl-12 pr-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none input-focus transition-all font-bold text-slate-700" required>
+                    </div>
+                </div>
+
+                <div id="errorMessage" class="hidden text-red-500 text-xs font-bold text-center bg-red-50 py-3 rounded-xl animate-pulse">
+                    Username atau password salah!
+                </div>
+
+                <button type="submit" class="w-full py-5 bg-[#0D4715] text-white rounded-2xl font-black text-sm tracking-widest hover:bg-[#1a5c23] transition-all shadow-xl shadow-green-900/20 active:scale-[0.98] mt-4">
+                    MASUK SEKARANG
+                </button>
+            </form>
+
+            <!-- Footer -->
+            <div class="mt-10 pt-8 border-t border-slate-50 flex justify-between items-center">
+                <p class="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Premium Admin Panel</p>
+                <div class="flex gap-2">
+                    <div class="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
+                    <div class="w-1.5 h-1.5 bg-green-200 rounded-full"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('errorMessage');
+
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+
+            // Kredensial Default (Bisa Anda sesuaikan)
+            const validUser = "admin";
+            const validPass = "admin123";
+
+            if (user === validUser && pass === validPass) {
+                // Berhasil Login
+                errorMessage.classList.add('hidden');
+                
+                // Simpan status login sederhana di session (optional)
+                sessionStorage.setItem('isLoggedIn', 'true');
+
+                // Efek loading sebelum pindah
+                const btn = e.target.querySelector('button');
+                btn.innerHTML = '<i class="fas fa-circle-notch animate-spin mr-2"></i> MENGALIHKAN...';
+                btn.style.opacity = '0.7';
+                btn.disabled = true;
+
+                // Berpindah ke index.html
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 800);
+            } else {
+                // Gagal Login
+                errorMessage.classList.remove('hidden');
+                // Shake effect
+                loginForm.classList.add('animate-shake');
+                setTimeout(() => loginForm.classList.remove('animate-shake'), 500);
+            }
+        });
+    </script>
+
+    <style>
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        .animate-shake { animation: shake 0.2s ease-in-out 0s 2; }
+    </style>
+</body>
+</html>
